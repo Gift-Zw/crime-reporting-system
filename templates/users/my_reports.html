@@ -1,0 +1,128 @@
+{% extends 'users/base.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="wrapper">
+ <main role="main" class="main-content">
+     {% include 'users/navbar.html' %}
+
+        <div class="container-fluid">
+                {% if messages %}
+        {% for message in messages %}
+            <div class="col-12 mb-4">
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show " style="text-color:blue" role="alert">
+                {{ message }}
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                 </button>
+                </div>
+            </div>
+        {% endfor %}
+        {% endif %}
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h2 class="mb-2 page-title">My Crime Reports</h2>
+              <p class="card-text">This is a table containing all the crime reports you made </p>
+
+                <div style="margin-left: 75%">
+                <a href="{% url 'user-create-report' %}" style="margin-right: 10px;">
+                 <button class="btn btn-primary">Add New Crime Report</button>
+             </a>
+                </div>
+
+              <div class="row my-4">
+                <!-- Small table -->
+                <div class="col-md-12">
+                  <div class="card shadow">
+                    <div class="card-body">
+{#                      <div class="form-group col-md-3" style="margin-left: 75%">#}
+{#                            <input type="text" class="form-control" id="searchAsset" placeholder="Search by serial number">#}
+{#                          </div>#}
+                      <!-- table -->
+                      <table class="table datatables" id="dataTable-1">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th><strong>Crime Type</strong></th>
+                            <th><strong>Location</strong></th>
+                             <th><strong>City</strong></th>
+                            <th><strong>Suspect Name</strong></th>
+                            <th><strong>Reporter Cell</strong></th>
+                            <th><strong>Status</strong></th>
+                            <th><strong>Assigned Officer</strong></th>
+                            <th><strong>Date Created</strong></th>
+                            <th><strong>Last Modified</strong></th>
+                            <th><strong>Action</strong></th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        {% for report in reports %}
+                          <tr>
+                            <td>{{ report.id }}</td>
+                              <td>{{ report.crime_type }}</td>
+                            <td>{{ report.location }}</td>
+                            <td>{{ report.city }}</td>
+                            <td>{{ report.suspect_information }}</td>
+                            <td>{{ report.reporter_cell }}</td>
+                            <td>{{ report.status }}</td>
+                            <td>{{ report.assigned_officer.full_name }}</td>
+                            <td>{{ report.date_created }}</td>
+                            <td>{{ report.last_modified}}</td>
+                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="text-muted sr-only">Action</span>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'user-crime-detail' report.id %}">View</a>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div> <!-- simple table -->
+              </div> <!-- end section -->
+            </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+      </main> <!-- main -->
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/simplebar.min.js' %}"></script>
+    <script src='{% static 'js/daterangepicker.js' %}'></script>
+    <script src='{% static 'js/jquery.stickOnScroll.js' %}'></script>
+    <script src="{% static 'js/tinycolor-min.js' %}"></script>
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src='{% static 'js/jquery.dataTables.min.js' %}'></script>
+    <script src='{% static 'js/dataTables.bootstrap4.min.js' %}'></script>
+    <script>
+      $('#dataTable-1').DataTable(
+      {
+        autoWidth: true,
+        "lengthMenu": [
+          [16, 32, 64, -1],
+          [16, 32, 64, "All"]
+        ]
+      });
+    </script>
+    <script src="{% static 'js/apps.js' %}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag()
+      {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-56159088-1');
+    </script>
+
+
+{% endblock content %}
