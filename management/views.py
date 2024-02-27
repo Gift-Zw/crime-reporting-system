@@ -14,6 +14,7 @@ from .decorators import admin_required
 from django.contrib.auth.forms import AuthenticationForm
 from .models import User
 from django.core.mail import EmailMessage
+from auditlog.models import LogEntry
 
 
 class EmailThread(threading.Thread):
@@ -91,7 +92,9 @@ def crime_reports_view(request):
 
 @admin_required
 def logs_view(request):
-    context = {}
+    context = {
+        'logs' : LogEntry.objects.all()
+    }
     return render(request, 'management/logs.html', context)
 
 

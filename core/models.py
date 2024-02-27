@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
 from management.models import User
+from auditlog.registry import auditlog
 
 
 class AnonymousReport(models.Model):
@@ -47,7 +48,7 @@ class CrimeReport(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.crime_type
+        return f'CrimeID : {self.id}'
 
 
 class CrimeAttachment(models.Model):
@@ -96,3 +97,10 @@ class WantedPerson(models.Model):
 
     def __str__(self):
         return self.name
+
+
+auditlog.register(WantedPerson)
+auditlog.register(PoliceStation)
+auditlog.register(CrimeReport)
+auditlog.register(CrimeAttachment)
+auditlog.register(CrimeReportComment)

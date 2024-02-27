@@ -39,42 +39,23 @@
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th><strong>Name</strong></th>
-                            <th><strong>Location</strong></th>
-                             <th><strong>City</strong></th>
-                            <th><strong>Phone</strong></th>
-                            <th><strong>Latitude</strong></th>
-                            <th><strong>Longitude</strong></th>
-                            <th><strong>Date Added</strong></th>
-                            <th><strong>Action</strong></th>
+                            <th><strong>User</strong></th>
+                            <th><strong>Resource</strong></th>
+                             <th><strong>Action</strong></th>
+                            <th><strong>Changes</strong></th>
+                            <th><strong>Date</strong></th>
                           </tr>
                         </thead>
                         <tbody id="tbody">
-                        {% for equip in object_list %}
+                        {% for log in logs %}
                           <tr>
-                            <td>{{ equip.ced_id }}</td>
-                            <td>{{ equip.asset.name }}</td>
-                            <td>{{ equip.serial_number }}</td>
-                            <td>{{ equip.asset.grv_number }}</td>
-                            <td>${{ equip.asset.purchase_value }}</td>
-                            <td>${{ equip.current_value }}</td>
-                            <td>{{ equip.room }}</td>
-                            <td>{{ equip.asset.vendor }}</td>
-                            <td>{{ equip.asset.date_purchased }}</td>
-                          <td>
-                              {% if equip.asset.assignee %}
-                                  {{ equip.asset.assignee.full_name }}
-                                  {% else %}
-                                  Unassigned
-                              {% endif %}
-                          </td>
-                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="text-muted sr-only">Action</span>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">View On Maps</a>
-                              </div>
-                            </td>
+                            <td>{{ log.id }}</td>
+                            <td>{{ log.actor }}</td>
+                            <td>{{ log.object_repr }}</td>
+                              <td>{% if log.action == 0 %}CREATE{% elif log.action == 1 %}UPDATE{% elif log.action == 2%} DELETE{% else %} ACCESS {% endif %}
+                              </td>
+                            <td>{{ log.changes }}</td>
+                            <td>{{ log.timestamp }}</td>
                           </tr>
                         {% endfor %}
                         </tbody>
