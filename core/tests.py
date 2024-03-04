@@ -85,3 +85,5 @@ class BlockchainIntegrationTestCase(TestCase):
         transaction_id = ethereum_client.store_crime_record(record_data)
         # Check if the transaction was successful
         self.assertIsNotNone(transaction_id)
+
+

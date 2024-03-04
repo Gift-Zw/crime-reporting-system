@@ -18,7 +18,7 @@ GENDER = (
 
 
 class CommentForm(forms.Form):
-    comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}))
+    post_comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}))
 
 
 class PoliceStationForm(forms.Form):

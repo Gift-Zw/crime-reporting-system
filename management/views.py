@@ -154,35 +154,51 @@ def wanted_persons_view(request):
 def crime_report_detail_view(request, id):
     report = CrimeReport.objects.get(id=id)
     files = CrimeAttachment.objects.filter(crime=report)
+    comments = CrimeReportComment.objects.filter(report=report)
+    number_of_comments = comments.count()
     if request.method == 'POST':
-        form = EditCreateReportForm(request.POST)
-        if form.is_valid():
-            print(form.data)
-            if form.data['status'] != '':
-                if report.status != form.data['status']:
-                    custom_send_email(report, form.data['status'], report.status)
-                    report.status = form.data['status']
+        if 'status' in request.POST:
+            form = EditCreateReportForm(request.POST)
+            if form.is_valid():
+                if form.data['status'] != '':
+                    if report.status != form.data['status']:
+                        custom_send_email(report, form.data['status'], report.status)
+                        report.status = form.data['status']
+                        report.save()
+
+                if len(str(form.data['assigned_officer'])) > 0:
+                    officer = User.objects.get(id=int(form.data['assigned_officer']))
+                    report.assigned_officer = officer
                     report.save()
 
-            if len(str(form.data['assigned_officer'])) > 0:
-                officer = User.objects.get(id=int(form.data['assigned_officer']))
-                report.assigned_officer = officer
-                report.save()
+                messages.success(request, 'The crime report has been successfully edited')
+                return redirect('management-report-detail', report.id)
+            else:
+                messages.error(request, form.errors)
 
-            messages.success(request, 'The crime report has been successfully edited')
-            return redirect('management-report-detail', report.id)
-        else:
-            messages.error(request, form.errors)
+        if 'comment' in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = CrimeReportComment.objects.create(
+                    report=report,
+                    user=request.user,
+                    comment=comment_form.data['post_comment'],
+                )
+                comment.save()
+                return redirect('management-report-detail', report.id)
+            else:
+                return redirect('management-report-detail', report.id)
 
     else:
         form = EditCreateReportForm()
-        # comment_form = CommentForm()
+        comment_form = CommentForm()
 
     context = {
         'report': report,
         'files': files,
         'form': EditCreateReportForm(),
-        # 'comment_form': CommentForm(),
-        # 'comments': comments
+        'comment_form': CommentForm(),
+        'comments': comments,
+        'comments_number':number_of_comments
     }
     return render(request, 'management/report_details.html', context)
