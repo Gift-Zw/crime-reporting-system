@@ -91,9 +91,17 @@ def crime_reports_view(request):
 
 
 @admin_required
+def assigned_crime_reports_view(request):
+    context = {
+        'reports': CrimeReport.objects.filter(assigned_officer=request.user)
+    }
+    return render(request, 'management/crime_reports.html', context)
+
+
+@admin_required
 def logs_view(request):
     context = {
-        'logs' : LogEntry.objects.all()
+        'logs': LogEntry.objects.all()
     }
     return render(request, 'management/logs.html', context)
 
@@ -133,8 +141,8 @@ def wanted_persons_view(request):
         if form.is_valid():
             person = WantedPerson.objects.create(
                 name=form.data['name'], alias=form.data['alias'],
-                gender=form.data['gender'],last_known_location=form.data['last_known_location'],
-                offense=form.data['offense'],contact_info=form.data['contact_info']
+                gender=form.data['gender'], last_known_location=form.data['last_known_location'],
+                offense=form.data['offense'], contact_info=form.data['contact_info']
             )
             person.save()
             messages.success(request, 'The wanted person has been successfully added')
@@ -199,6 +207,6 @@ def crime_report_detail_view(request, id):
         'form': EditCreateReportForm(),
         'comment_form': CommentForm(),
         'comments': comments,
-        'comments_number':number_of_comments
+        'comments_number': number_of_comments
     }
     return render(request, 'management/report_details.html', context)
