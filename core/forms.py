@@ -10,8 +10,6 @@ CRIME_TYPES = (
     ('ROBBERY', 'Robbery'),
     ('FRAUD', 'Fraud'),
     ('DRUG_OFFENSE', 'Drug Offense'),
-    ('HARASSMENT', 'Harassment'),
-    ('SEXUAL_ASSAULT', 'Sexual Assault'),
     ('KIDNAPPING', 'Kidnapping'),
 
 )

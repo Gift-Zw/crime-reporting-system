@@ -63,13 +63,34 @@ class AdminLoginView(LoginView):
     redirect_field_name = 'next'
 
     def get_success_url(self):
+        if not self.request.user.is_staff:
+            messages.warning(self.request, 'Please sign in using an Admin account')
+            logout(self.request)
         return reverse_lazy('management-dashboard')
 
 
 @admin_required
 def dashboard_view(request):
+    my_reports = CrimeReport.objects.all()
     context = {
-        'reports': CrimeReport.objects.all()
+        'reports': CrimeReport.objects.all()[:5],
+        'reports_total': my_reports.count(),
+        'under_review': my_reports.filter(status='Suspended').count(),
+        'closed': my_reports.filter(status='Closed').count(),
+        'under_investigation': my_reports.filter(status='Under Investigation').count(),
+        'refered_to_court': my_reports.filter(status='Referred to Court').count(),
+        'suspended': my_reports.filter(status='Suspended').count(),
+        'theft': my_reports.filter(crime_type='THEFT').count(),
+        'buglary': my_reports.filter(crime_type='BURGLARY').count(),
+        'assault': my_reports.filter(crime_type='ASSAULT').count(),
+        'robbery': my_reports.filter(crime_type='ROBBERY').count(),
+        'fraud': my_reports.filter(crime_type='FRAUD').count(),
+        'drug_offense': my_reports.filter(crime_type='DRUG_OFFENSE').count(),
+        'kidnapping': my_reports.filter(crime_type='KIDNAPPING').count(),
+        'wanted_persons': WantedPerson.objects.all().count(),
+        'police_stations': PoliceStation.objects.all().count(),
+        'anonymous_reports': AnonymousReport.objects.all().count(),
+        'users': User.objects.all().count()
     }
     return render(request, 'management/index.html', context)
 

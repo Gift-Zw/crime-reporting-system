@@ -50,6 +50,7 @@
                             <th><strong>Phone</strong></th>
                             <th><strong>Latitude</strong></th>
                             <th><strong>Longitude</strong></th>
+                              <th><strong>Action</strong></th>
                           </tr>
                         </thead>
                         <tbody id="tbody">
@@ -62,6 +63,7 @@
                             <td>{{ station.phone }}</td>
                             <td>{{ station.latitude }}</td>
                             <td>{{ station.longitude }}</td>
+                              <td><a href="https://www.google.com/maps/search/?api=1&query={{ station.latitude }}, {{ station.longitude }}" target="_blank"><button class="btn-primary">Open Map</button></a></td>
                           </tr>
                         {% endfor %}
                         </tbody>

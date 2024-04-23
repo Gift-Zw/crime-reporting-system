@@ -3,7 +3,6 @@ from .models import User
 
 CRIME_STATUS = (
     ('', ''),
-    ('Received', 'Received'),
     ('Under Review', 'Under Review'),
     ('Closed', 'Closed'),
     ('Under Investigation', 'Under Investigation'),

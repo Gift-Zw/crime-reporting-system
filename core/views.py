@@ -33,6 +33,8 @@ class UserRegistrationView(CreateView):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
         user = User.objects.get(email=email)
+        user.is_staff = False
+        user.save()
         login(self.request, user)
         return redirect('user-dashboard')
 
@@ -44,12 +46,24 @@ class RegularUserLoginView(LoginView):
     redirect_field_name = 'next'
 
     def get_success_url(self):
+        if self.request.user.is_staff:
+            messages.warning(self.request, 'Please sign in using an user account')
+            logout(self.request)
         return reverse_lazy('user-dashboard')
 
 
 @citizen_required
 def dashboard_view(request):
-    context = {}
+    my_reports = CrimeReport.objects.filter(reporter=request.user)
+    context = {
+        'wanted_persons': WantedPerson.objects.all()[:5],
+        'reports_total': my_reports.count(),
+        'under_review': my_reports.filter(status='Suspended').count(),
+        'closed': my_reports.filter(status='Closed').count(),
+        'under_investigation': my_reports.filter(status='Under Investigation').count(),
+        'refered_to_court': my_reports.filter(status='Referred to Court').count(),
+        'suspended': my_reports.filter(status='Suspended').count(),
+    }
     return render(request, 'users/dashboard.html', context)
 
 

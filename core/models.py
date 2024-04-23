@@ -41,7 +41,7 @@ class CrimeReport(models.Model):
     witness_information = models.CharField(max_length=255, default='N/A')
     reporter_cell = models.CharField(max_length=25, default='N/A')
     description = models.TextField(default='N/A')
-    status = models.CharField(max_length=255, default='Received')
+    status = models.CharField(max_length=255, default='Under Review')
     assigned_officer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='assigned_officer',
                                          default=None)
     date_created = models.DateTimeField(auto_now_add=True)

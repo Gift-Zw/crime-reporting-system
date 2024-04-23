@@ -51,7 +51,7 @@
                  <div class="col-12 col-md-7">
                   <div class="card shadow mb-4">
                     <div class="card-header">
-                     <h4> <strong class="card-title mb-0">Reported Crimes Distribution</strong></h4><span>(Total : 10)</span>
+                     <h4> <strong class="card-title mb-0">Reported Crimes Distribution</strong></h4><span>(Total : {{ reports_total }})</span>
                     </div>
                     <div class="card-body text-center">
                       <div id="donutChart1"></div>
@@ -87,14 +87,16 @@
                           </tr>
                         </thead>
                         <tbody>
-                             {% for key in keys %}
+                             {% for person in wanted_persons %}
                           <tr>
-                            <td>{{ key.id }}</td>
-                            <td>{{ key.key }}</td>
-                            <td>{{ key.user_email }}</td>
-                            <td>{{ key.expiry_date }}</td>
-                            <td>{{ key.is_blocked }}</td>
-                          <td>{{ key.date_created }}</td>
+                            <td>{{ person.id }}</td>
+                            <td>{{ person.name }}</td>
+                            <td>{{ person.alias }}</td>
+                            <td>{{ person.gender }}</td>
+                            <td>{{ person.last_known_location }}</td>
+                          <td>{{ person.offense }}</td>
+                          <td>{{ person.contact_info }}</td>
+                          <td>{{ person.date_added }}</td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -140,11 +142,11 @@
 
          var donutchart,
     donutChartOptions = {
-        series: [16,5,3],
+        series: [{{ under_review }}, {{ closed }}, {{ under_investigation }}, {{ refered_to_court }}, {{ suspended }}],
         chart: { type: "donut", height: 305, zoom: { enabled: !1 } },
         theme: { mode: colors.chartTheme },
         plotOptions: { pie: { donut: { size: "40%" }, expandOnClick: !1 } },
-        labels: ["Active", "Expired", "Blocked"],
+        labels: ["Under Review", "Closed", "Under Investigation", "Referred to Court", "Suspended"],
         legend: {
             position: "bottom",
             fontFamily: base.defaultFontFamily,

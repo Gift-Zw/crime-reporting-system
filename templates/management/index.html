@@ -28,7 +28,7 @@
                 </div>
               </div>
               <div class="row items-align-baseline">
-                <div class="col-md-12 col-lg-4">
+                <div class="col-md-12 col-lg-5">
                   <div class="card shadow eq-card mb-4">
                     <div class="card shadow mb-4">
                     <div class="card-header">
@@ -40,25 +40,25 @@
                   </div>
                   </div> <!-- .card -->
                 </div> <!-- .col -->
-                  <div class="col-md-12 col-lg-3">
+                  <div class="col-md-12 col-lg-2">
                   <div class="card shadow eq-card mb-4">
                     <div class="card-body mb-n3">
                       <div class="row items-align-baseline h-80">
                         <div class="col-md-12 my-3 text-center">
                           <p class="mb-0"><strong class="mb-0 text-uppercase text-regular">Police Stations</strong></p>
-                          <h3 class=""> 35</h3>
+                          <h3 class=""> {{ police_stations }}</h3>
                         </div>
                         <div class="col-md-12 border-top py-3 text-center">
                           <p class="mb-1"><strong class="text-uppercase text-regular">Wanted Persons</strong></p>
-                          <h3 class="mb-0">250</h3>
+                          <h3 class="mb-0">{{ wanted_persons }}</h3>
                         </div> <!-- .col -->
                         <div class="col-md-12 border-top py-3 text-center">
                             <p class="mb-1"><strong class="text-uppercase text-regular">Anonymous Reports</strong></p>
-                          <h3 class="mb-0">98</h3>
+                          <h3 class="mb-0">{{ anonymous_reports }}</h3>
                         </div><!-- .col -->
                           <div class="col-md-12 border-top py-3 text-center">
                             <p class="mb-1"><strong class="text-uppercase text-regular">Users</strong></p>
-                          <h3 class="mb-0">695</h3>
+                          <h3 class="mb-0">{{ users }}</h3>
                         </div>
                       </div>
 
@@ -160,7 +160,7 @@
 
          var donutchart,
     donutChartOptions = {
-        series: [52,25,63,98,45,26,50],
+        series: [{{ theft }}, {{ buglary }}, {{ assault }}, {{ robbery }}, {{ fraud }}, {{ drug_offense }}, {{ kidnapping }}],
         chart: { type: "donut", height: 305, zoom: { enabled: !1 } },
         theme: { mode: colors.chartTheme },
         plotOptions: { pie: { donut: { size: "40%" }, expandOnClick: !1 } },
@@ -185,11 +185,11 @@ donutchartCtn && (donutchart = new ApexCharts(donutchartCtn, donutChartOptions))
 
   var warrantyChart,
     warrantyChartOptions = {
-        series: [25,35,33,54,42,40],
+        series: [{{ under_review }}, {{ closed }}, {{ under_investigation }}, {{ refered_to_court }}, {{ suspended }}],
         chart: { type: "donut", height: 305, zoom: { enabled: !1 } },
         theme: { mode: colors.chartTheme },
         plotOptions: { pie: { donut: { size: "40%" }, expandOnClick: !1 } },
-        labels: ["Received", "Under Review", "Closed", "Under Investigation", "Referred to Court", "Suspended"],
+        labels: ["Under Review", "Closed", "Under Investigation", "Referred to Court", "Suspended"],
         legend: {
             position: "bottom",
             fontFamily: base.defaultFontFamily,
